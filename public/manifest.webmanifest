@@ -1,0 +1,19 @@
+{
+  "name": "MnemoLock",
+  "short_name": "MnemoLock",
+  "description": "Bloqueo de enfoque que se desbloquea con preguntas de estudio.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#edf8fb",
+  "theme_color": "#dff5ff",
+  "orientation": "portrait-primary",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
