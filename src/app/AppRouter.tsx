@@ -10,7 +10,7 @@ import { StrategyPage } from "../features/strategy/StrategyPage";
 
 export function AppRouter() {
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
       <Routes>
         <Route element={<AppShell />}>
           <Route index element={<HomePage />} />

@@ -1,8 +1,10 @@
 import { Settings, Target } from "lucide-react";
 import { studySets } from "../../data/studySets";
+import type { StudySet } from "../../types/domain";
 
 type StudyControlsProps = {
   cooldownMinutes: number;
+  sets?: StudySet[];
   selectedSetId: string;
   strictMode: boolean;
   unlockTarget: number;
@@ -15,6 +17,7 @@ type StudyControlsProps = {
 
 export function StudyControls({
   cooldownMinutes,
+  sets = studySets,
   selectedSetId,
   strictMode,
   unlockTarget,
@@ -31,7 +34,7 @@ export function StudyControls({
         <Target size={18} />
       </div>
       <div className="set-list">
-        {studySets.map((set) => (
+        {sets.map((set) => (
           <button
             className={set.id === selectedSetId ? "set-button selected" : "set-button"}
             key={set.id}

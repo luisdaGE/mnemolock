@@ -3,6 +3,7 @@ create table if not exists public.study_sets (
   user_id uuid not null references auth.users(id) on delete cascade,
   title text not null,
   subject text not null,
+  default_minutes int not null default 25 check (default_minutes > 0),
   source_notes text,
   created_at timestamptz not null default now()
 );
@@ -27,11 +28,16 @@ create table if not exists public.user_settings (
 create table if not exists public.questions (
   id uuid primary key default gen_random_uuid(),
   study_set_id uuid not null references public.study_sets(id) on delete cascade,
+  source_chunk_id uuid,
   prompt text not null,
   options text[] not null check (array_length(options, 1) >= 2),
   answer_index int not null check (answer_index >= 0),
   difficulty text not null default 'medium' check (difficulty in ('easy', 'medium', 'hard')),
-  explanation text
+  explanation text,
+  origin text not null default 'manual' check (origin in ('manual', 'source_generated')),
+  constraint questions_source_generated_requires_chunk check (
+    origin = 'manual' or source_chunk_id is not null
+  )
 );
 
 create table if not exists public.study_sources (
@@ -42,6 +48,7 @@ create table if not exists public.study_sources (
   file_path text,
   mime_type text not null,
   status text not null default 'uploaded' check (status in ('uploaded', 'processing', 'ready', 'failed')),
+  error_message text,
   created_at timestamptz not null default now()
 );
 
@@ -79,8 +86,10 @@ end $$;
 
 create index if not exists questions_study_set_id_idx on public.questions(study_set_id);
 create index if not exists questions_source_chunk_id_idx on public.questions(source_chunk_id);
+create index if not exists study_sets_user_created_at_idx on public.study_sets(user_id, created_at desc);
 create index if not exists study_sources_user_id_idx on public.study_sources(user_id);
 create index if not exists study_sources_study_set_id_idx on public.study_sources(study_set_id);
+create index if not exists study_sources_user_created_at_idx on public.study_sources(user_id, created_at desc);
 create index if not exists source_chunks_source_id_idx on public.source_chunks(source_id);
 
 create table if not exists public.focus_sessions (
@@ -117,9 +126,69 @@ create table if not exists public.question_attempts (
 
 create index if not exists focus_sessions_user_id_idx on public.focus_sessions(user_id);
 create index if not exists focus_sessions_study_set_id_idx on public.focus_sessions(study_set_id);
+create index if not exists focus_sessions_user_started_at_idx on public.focus_sessions(user_id, started_at desc);
 create index if not exists quiz_attempts_user_id_idx on public.quiz_attempts(user_id);
 create index if not exists quiz_attempts_study_set_id_idx on public.quiz_attempts(study_set_id);
+create index if not exists quiz_attempts_user_created_at_idx on public.quiz_attempts(user_id, created_at desc);
 create index if not exists question_attempts_quiz_attempt_id_idx on public.question_attempts(quiz_attempt_id);
+
+do $$
+begin
+  if not exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'study_sets'
+      and column_name = 'default_minutes'
+  ) then
+    alter table public.study_sets
+    add column default_minutes int not null default 25 check (default_minutes > 0);
+  end if;
+
+  if not exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'study_sources'
+      and column_name = 'error_message'
+  ) then
+    alter table public.study_sources add column error_message text;
+  end if;
+
+  if not exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'questions'
+      and column_name = 'origin'
+  ) then
+    alter table public.questions
+    add column origin text not null default 'manual' check (origin in ('manual', 'source_generated'));
+  end if;
+
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'questions_source_generated_requires_chunk'
+  ) then
+    alter table public.questions
+    add constraint questions_source_generated_requires_chunk
+    check (origin = 'manual' or source_chunk_id is not null);
+  end if;
+end $$;
+
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values (
+  'study-sources',
+  'study-sources',
+  false,
+  6291456,
+  array['application/pdf', 'text/plain', 'text/markdown']
+)
+on conflict (id) do update set
+  public = excluded.public,
+  file_size_limit = excluded.file_size_limit,
+  allowed_mime_types = excluded.allowed_mime_types;
 
 alter table public.profiles enable row level security;
 alter table public.user_settings enable row level security;
@@ -244,4 +313,48 @@ with check (
     where quiz_attempts.id = question_attempts.quiz_attempt_id
       and quiz_attempts.user_id = auth.uid()
   )
+);
+
+drop policy if exists "Users read own source files" on storage.objects;
+create policy "Users read own source files"
+on storage.objects
+for select
+to authenticated
+using (
+  bucket_id = 'study-sources'
+  and (storage.foldername(name))[1] = (select auth.jwt()->>'sub')
+);
+
+drop policy if exists "Users upload own source files" on storage.objects;
+create policy "Users upload own source files"
+on storage.objects
+for insert
+to authenticated
+with check (
+  bucket_id = 'study-sources'
+  and (storage.foldername(name))[1] = (select auth.jwt()->>'sub')
+);
+
+drop policy if exists "Users update own source files" on storage.objects;
+create policy "Users update own source files"
+on storage.objects
+for update
+to authenticated
+using (
+  bucket_id = 'study-sources'
+  and (storage.foldername(name))[1] = (select auth.jwt()->>'sub')
+)
+with check (
+  bucket_id = 'study-sources'
+  and (storage.foldername(name))[1] = (select auth.jwt()->>'sub')
+);
+
+drop policy if exists "Users delete own source files" on storage.objects;
+create policy "Users delete own source files"
+on storage.objects
+for delete
+to authenticated
+using (
+  bucket_id = 'study-sources'
+  and (storage.foldername(name))[1] = (select auth.jwt()->>'sub')
 );

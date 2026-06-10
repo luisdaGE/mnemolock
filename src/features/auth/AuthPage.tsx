@@ -12,6 +12,7 @@ export function AuthPage() {
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [message, setMessage] = useState("Accede para guardar tus sesiones, materias y progreso.");
+  const [loadingAction, setLoadingAction] = useState<"login" | "signup" | "google" | null>(null);
 
   async function handleLogin() {
     if (!loginEmail || loginPassword.length < appConfig.minPasswordLength) {
@@ -19,14 +20,16 @@ export function AuthPage() {
       return;
     }
 
+    setLoadingAction("login");
     const { error } = await signInWithEmail(loginEmail, loginPassword);
+    setLoadingAction(null);
     if (error) {
       setMessage(error.message);
       return;
     }
 
     setMessage("Sesion iniciada.");
-    navigate("/dashboard");
+    navigate("/dashboard?welcome=1");
   }
 
   async function handleSignup() {
@@ -35,12 +38,16 @@ export function AuthPage() {
       return;
     }
 
+    setLoadingAction("signup");
     const { error } = await signUpWithEmail(signupEmail, signupPassword);
+    setLoadingAction(null);
     setMessage(error ? error.message : "Revisa tu correo para confirmar la cuenta.");
   }
 
   async function handleGoogleLogin() {
+    setLoadingAction("google");
     const { error } = await signInWithGoogle();
+    setLoadingAction(null);
     if (error) setMessage(error.message);
   }
 
@@ -86,9 +93,12 @@ export function AuthPage() {
                 value={loginPassword}
               />
             </label>
-            <button className="auth-submit primary-btn full" onClick={handleLogin}>
-              Iniciar sesion
+            <button className="auth-submit primary-btn full" disabled={loadingAction === "login"} onClick={handleLogin}>
+              {loadingAction === "login" ? "Entrando..." : "Iniciar sesion"}
             </button>
+            <a className="auth-small-link" href="mailto:soporte@mnemolock.app?subject=Recuperar%20contrasena">
+              Olvide mi contrasena
+            </a>
           </article>
 
           <article className="auth-module">
@@ -116,18 +126,19 @@ export function AuthPage() {
                 value={signupPassword}
               />
             </label>
-            <button className="auth-submit secondary-btn full" onClick={handleSignup}>
-              Crear cuenta
+            <button className="auth-submit secondary-btn full" disabled={loadingAction === "signup"} onClick={handleSignup}>
+              {loadingAction === "signup" ? "Creando..." : "Crear cuenta"}
             </button>
           </article>
         </div>
 
         <div className="google-auth-block">
           <span>O continua con tu cuenta favorita</span>
-          <button className="google-btn" onClick={handleGoogleLogin}>
+          <button className="google-btn" disabled={loadingAction === "google"} onClick={handleGoogleLogin}>
             <GoogleMark />
-            Iniciar sesion con Google
+            {loadingAction === "google" ? "Abriendo Google..." : "Iniciar sesion con Google"}
           </button>
+          <small>Al continuar aceptas usar MnemoLock como bloqueo cognitivo web; el bloqueo total del sistema requiere apps nativas.</small>
         </div>
       </div>
     </section>

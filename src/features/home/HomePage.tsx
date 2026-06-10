@@ -1,4 +1,5 @@
 import { ArrowRight, BookOpenCheck, BrainCircuit, CheckCircle2, FileQuestion, LockKeyhole, Play, TimerReset, Unlock } from "lucide-react";
+import { LockPanel } from "../../components/LockPanel";
 import { infoPages } from "../../data/infoPages";
 import { useStudySession } from "../study-session/useStudySession";
 import { formatTime } from "../../utils/study";
@@ -14,12 +15,35 @@ export function HomePage() {
 
   return (
     <>
+      {session.sessionState !== "setup" ? (
+        <section className="session-overlay" aria-label="Sesion de estudio activa">
+          <LockPanel
+            activeQuestion={session.activeQuestion}
+            answers={session.answers}
+            correctCount={session.correctCount}
+            currentQuestion={session.currentQuestion}
+            isDemoMode={!session.activeFocusSessionId}
+            onAnswer={session.chooseAnswer}
+            onExitDemo={session.exitDemoSession}
+            onStart={session.startSession}
+            progress={session.progress}
+            secondsLeft={session.secondsLeft}
+            set={session.selectedSet}
+            state={session.sessionState}
+            syncMessage={session.syncMessage}
+            syncStatus={session.syncStatus}
+            unlockTarget={session.unlockTarget}
+          />
+        </section>
+      ) : null}
+
       <section className="calm-hero" id="inicio">
         <div className="calm-hero-copy">
           <p className="eyebrow">Enfoque para estudiar</p>
-          <h1>Bloquea distracciones hasta que aprendas.</h1>
+          <h1>Estudia. Bloqueate. Demuestra que aprendiste.</h1>
           <p>
-            MnemoLock abre la puerta con memoria: estudia primero, responde despues y sal sin pelear con el impulso.
+            MnemoLock convierte una salida impulsiva en una prueba corta de memoria activa. Empieza una demo en menos
+            de 30 segundos.
           </p>
           <div className="hero-actions">
             <a className="primary-btn" href="/login">
@@ -34,11 +58,11 @@ export function HomePage() {
           <div className="calm-proof">
             <span>
               <CheckCircle2 size={15} />
-              Sin tarjeta
+              Demo sin registro
             </span>
             <span>
               <BookOpenCheck size={15} />
-              Repaso activo
+              Bloqueo cognitivo
             </span>
           </div>
         </div>
@@ -51,6 +75,7 @@ export function HomePage() {
           <h2>{session.selectedSet.title}</h2>
           <div className="calm-preview-meta">
             <span>Ciencias</span>
+            <span>Demo web</span>
             <span>Modo estricto</span>
           </div>
           <strong>{formatTime(session.secondsLeft)}</strong>

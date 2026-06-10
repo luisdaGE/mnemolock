@@ -45,6 +45,7 @@ export type Database = {
           user_id: string;
           title: string;
           subject: string;
+          default_minutes: number;
           source_notes: string | null;
           created_at: string;
         };
@@ -53,6 +54,7 @@ export type Database = {
           user_id: string;
           title: string;
           subject: string;
+          default_minutes?: number;
           source_notes?: string | null;
           created_at?: string;
         };
@@ -68,6 +70,7 @@ export type Database = {
           answer_index: number;
           difficulty: "easy" | "medium" | "hard";
           explanation: string | null;
+          origin: "manual" | "source_generated";
         };
         Insert: {
           id?: string;
@@ -78,6 +81,7 @@ export type Database = {
           answer_index: number;
           difficulty?: "easy" | "medium" | "hard";
           explanation?: string | null;
+          origin?: "manual" | "source_generated";
         };
         Update: Partial<Database["public"]["Tables"]["questions"]["Insert"]>;
       };
@@ -90,6 +94,7 @@ export type Database = {
           file_path: string | null;
           mime_type: string;
           status: "uploaded" | "processing" | "ready" | "failed";
+          error_message: string | null;
           created_at: string;
         };
         Insert: {
@@ -100,6 +105,7 @@ export type Database = {
           file_path?: string | null;
           mime_type: string;
           status?: "uploaded" | "processing" | "ready" | "failed";
+          error_message?: string | null;
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["study_sources"]["Insert"]>;

@@ -4,8 +4,8 @@
   "description": "Bloqueo de enfoque que se desbloquea con preguntas de estudio.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#edf8fb",
-  "theme_color": "#dff5ff",
+  "background_color": "#0D1B2A",
+  "theme_color": "#133B5C",
   "orientation": "portrait-primary",
   "categories": ["education", "productivity"],
   "icons": [
