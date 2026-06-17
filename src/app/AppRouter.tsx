@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AppShell } from "./AppShell";
+import { SiteLayout } from "./SiteLayout";
 import { DashboardPage } from "../features/dashboard/DashboardPage";
 import { AuthPage } from "../features/auth/AuthPage";
 import { HomePage } from "../features/home/HomePage";
@@ -12,10 +13,15 @@ export function AppRouter() {
   return (
     <BrowserRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
       <Routes>
-        <Route element={<AppShell />}>
+        {/* Public marketing experience */}
+        <Route element={<SiteLayout />}>
           <Route index element={<HomePage />} />
           <Route path="login" element={<AuthPage />} />
           <Route path="info/:slug" element={<InfoPage />} />
+        </Route>
+
+        {/* Authenticated product workspace */}
+        <Route element={<AppShell />}>
           <Route path="sources" element={<SourcesPage />} />
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="strategy" element={<StrategyPage />} />

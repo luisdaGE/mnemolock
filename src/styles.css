@@ -3668,3 +3668,427 @@ textarea:focus-visible {
     flex-direction: column;
   }
 }
+
+/* =========================================================
+   MINDLATCH INTERNAL APP THEME
+   Premium, consistent look for the authenticated workspace.
+   Scoped under .app-themed so the public site is untouched.
+   ========================================================= */
+.app-themed {
+  /* Recolor shared tokens -> cascades to every var() usage */
+  --ink: #0b1026;
+  --muted: #5b687f;
+  --line: rgba(11, 16, 38, 0.1);
+  --surface: rgba(255, 255, 255, 0.9);
+  --surface-strong: #ffffff;
+  --blue: #2388ff;
+  --cyan: #35d6ff;
+  --mint: #8b5cf6;
+  --lime: #35d6ff;
+
+  --mlx-blue: #2388ff;
+  --mlx-cyan: #35d6ff;
+  --mlx-violet: #8b5cf6;
+  --mlx-navy: #07122f;
+  --mlx-accent: #1366d6;
+  --mlx-radius: 18px;
+  --mlx-shadow: 0 16px 44px rgba(16, 28, 70, 0.1);
+  --mlx-shadow-sm: 0 4px 16px rgba(16, 28, 70, 0.07);
+
+  color: var(--ink);
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 12% -2%, rgba(35, 136, 255, 0.12), transparent 38%),
+    radial-gradient(circle at 92% 4%, rgba(139, 92, 246, 0.1), transparent 36%),
+    linear-gradient(180deg, #f4f7fe, #eef2fc 60%, #f5f7ff);
+}
+
+.app-themed::before {
+  opacity: 0.5;
+  background-image:
+    linear-gradient(rgba(35, 136, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(35, 136, 255, 0.06) 1px, transparent 1px);
+  background-size: 76px 76px;
+}
+
+.app-themed::after {
+  display: none;
+}
+
+.app-themed .shell {
+  padding-top: 22px;
+}
+
+/* ---- App header / nav ---- */
+.app-themed .topbar.app-topbar {
+  position: sticky;
+  top: 14px;
+  left: auto;
+  transform: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 66px;
+  padding: 10px 16px;
+  border: 1px solid rgba(11, 16, 38, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 10px 34px rgba(16, 28, 70, 0.08);
+  backdrop-filter: blur(16px);
+}
+
+.app-themed .topbar.app-topbar.scrolled {
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 12px 38px rgba(16, 28, 70, 0.14);
+}
+
+.app-brand {
+  flex: 0 0 auto;
+  text-decoration: none;
+}
+
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 auto;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(11, 16, 38, 0.04);
+}
+
+.app-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  color: #56617a;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+}
+
+.app-nav-link:hover {
+  color: var(--mlx-accent);
+}
+
+.app-nav-link.active {
+  color: #0b1026;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(16, 28, 70, 0.12);
+}
+
+.app-nav-link.active svg {
+  color: var(--mlx-blue);
+}
+
+.app-exit {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 auto;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(11, 16, 38, 0.12);
+  color: #45516b;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.16s ease;
+}
+
+.app-exit:hover {
+  color: var(--mlx-accent);
+  border-color: rgba(35, 136, 255, 0.4);
+}
+
+/* ---- Buttons ---- */
+.app-themed .primary-btn {
+  border-radius: 12px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #2388ff, #8b5cf6);
+  box-shadow: 0 14px 30px rgba(35, 136, 255, 0.28);
+}
+
+.app-themed .primary-btn:hover {
+  box-shadow: 0 18px 38px rgba(35, 136, 255, 0.38);
+}
+
+.app-themed .secondary-btn,
+.app-themed .google-btn {
+  border-radius: 12px;
+  color: #0b1026;
+  background: #ffffff;
+  border: 1px solid rgba(11, 16, 38, 0.14);
+}
+
+.app-themed .secondary-btn:hover {
+  border-color: rgba(35, 136, 255, 0.45);
+  color: var(--mlx-accent);
+}
+
+/* ---- Accents / headings ---- */
+.app-themed .eyebrow {
+  color: var(--mlx-accent);
+}
+
+.app-themed .section-heading {
+  color: var(--mlx-accent);
+}
+
+.app-themed .quiet-link,
+.app-themed .back-link {
+  color: var(--mlx-accent);
+}
+
+/* ---- Cards: unified radius, shadow, hover ---- */
+.app-themed .guide-card,
+.app-themed .stats-ribbon article,
+.app-themed .control-panel,
+.app-themed .current-session-card,
+.app-themed .study-form-panel,
+.app-themed .study-set-admin-list,
+.app-themed .study-set-admin-card,
+.app-themed .sync-banner,
+.app-themed .metric-card,
+.app-themed .feature-band,
+.app-themed .dashboard,
+.app-themed .insight-card,
+.app-themed .business-card,
+.app-themed .settings-card,
+.app-themed .source-list-panel,
+.app-themed .chunk-preview-panel,
+.app-themed .empty-state-panel,
+.app-themed .source-error-panel {
+  border-radius: var(--mlx-radius);
+  border-color: rgba(11, 16, 38, 0.09);
+  box-shadow: var(--mlx-shadow-sm);
+}
+
+.app-themed .guide-card,
+.app-themed .metric-card,
+.app-themed .insight-card,
+.app-themed .business-card,
+.app-themed .settings-card,
+.app-themed .stats-ribbon article {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.app-themed .guide-card:hover,
+.app-themed .metric-card:hover,
+.app-themed .insight-card:hover,
+.app-themed .business-card:hover,
+.app-themed .settings-card:hover,
+.app-themed .stats-ribbon article:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--mlx-shadow);
+  border-color: rgba(35, 136, 255, 0.28);
+}
+
+/* Icon tiles & accents */
+.app-themed .metric-card span {
+  color: #ffffff;
+  background: linear-gradient(135deg, #2388ff, #8b5cf6);
+  box-shadow: 0 10px 24px rgba(35, 136, 255, 0.24);
+}
+
+.app-themed .guide-card svg,
+.app-themed .stats-ribbon svg,
+.app-themed .mini-card svg,
+.app-themed .feature-card svg,
+.app-themed .business-card svg,
+.app-themed .settings-card svg,
+.app-themed .source-list-panel svg,
+.app-themed .quiet-cta svg {
+  color: var(--mlx-blue);
+}
+
+/* ---- Forms / inputs ---- */
+.app-themed .auth-input {
+  border-radius: 12px;
+  background: #ffffff;
+  border-color: rgba(11, 16, 38, 0.14);
+}
+
+.app-themed .auth-input:focus {
+  border-color: var(--mlx-blue);
+  box-shadow: 0 0 0 3px rgba(35, 136, 255, 0.16);
+}
+
+.app-themed .auth-input::placeholder {
+  color: #9aa3b7;
+}
+
+.app-themed input[type="checkbox"],
+.app-themed input[type="range"] {
+  accent-color: var(--mlx-blue);
+}
+
+/* Study controls */
+.app-themed .set-button {
+  border-radius: 12px;
+}
+
+.app-themed .set-button:hover {
+  border-color: rgba(35, 136, 255, 0.28);
+}
+
+.app-themed .set-button.selected {
+  background: rgba(35, 136, 255, 0.07);
+  border-color: rgba(35, 136, 255, 0.4);
+  box-shadow: 0 8px 20px rgba(35, 136, 255, 0.12);
+}
+
+/* Quiz answers */
+.app-themed .answer {
+  border-radius: 12px;
+}
+
+.app-themed .answer:hover {
+  border-color: rgba(35, 136, 255, 0.3);
+}
+
+.app-themed .answer.selected {
+  background: rgba(35, 136, 255, 0.1);
+  border-color: rgba(35, 136, 255, 0.45);
+}
+
+/* ---- Sync banner: clearer hierarchy ---- */
+.app-themed .sync-banner {
+  border-left: 4px solid var(--mlx-blue);
+}
+
+.app-themed .sync-banner strong {
+  color: #0b1026;
+}
+
+/* ---- Empty state ---- */
+.app-themed .empty-state-panel svg {
+  color: var(--mlx-blue);
+}
+
+/* =========================================================
+   BLOCKING SCREEN / LOCK CARD (dark surfaces -> light text)
+   ========================================================= */
+.active-lock-card {
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 50% 14%, rgba(35, 214, 255, 0.22), transparent 38%),
+    radial-gradient(circle at 80% 90%, rgba(139, 92, 246, 0.2), transparent 42%),
+    linear-gradient(180deg, #0a1738, #07122f);
+  border-color: rgba(120, 150, 220, 0.28);
+}
+
+.active-lock-card h2 {
+  color: #f4f7ff;
+}
+
+.progress-ring-value {
+  stroke: #35d6ff;
+}
+
+.quiz-progress span {
+  background: linear-gradient(90deg, #2388ff, #35d6ff);
+}
+
+.session-badge.demo {
+  color: #ffe6c2;
+  background: rgba(245, 158, 11, 0.2);
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.session-badge.synced {
+  color: #c7fff0;
+  background: rgba(35, 214, 255, 0.16);
+  border-color: rgba(35, 214, 255, 0.4);
+}
+
+/* Quiz card (light) on overlay keeps dark text – ensure progress is on-brand */
+.quiz-card .answer.selected {
+  background: rgba(35, 136, 255, 0.1);
+  border-color: rgba(35, 136, 255, 0.45);
+}
+
+/* =========================================================
+   SUBTLE ENTRANCE ANIMATIONS (intentional, light)
+   ========================================================= */
+@keyframes mlxFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.app-themed .guided-header,
+.app-themed .guide-grid,
+.app-themed .stats-ribbon,
+.app-themed .sync-banner,
+.app-themed .guided-workspace,
+.app-themed .study-admin-grid,
+.app-themed .work-hero,
+.app-themed .sources-workspace,
+.app-themed .settings-grid {
+  animation: mlxFadeUp 0.5s ease both;
+}
+
+.app-themed .guide-grid {
+  animation-delay: 0.05s;
+}
+
+.app-themed .stats-ribbon {
+  animation-delay: 0.1s;
+}
+
+.app-themed .guided-workspace {
+  animation-delay: 0.15s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-themed .guided-header,
+  .app-themed .guide-grid,
+  .app-themed .stats-ribbon,
+  .app-themed .sync-banner,
+  .app-themed .guided-workspace,
+  .app-themed .study-admin-grid,
+  .app-themed .work-hero,
+  .app-themed .sources-workspace,
+  .app-themed .settings-grid {
+    animation: none;
+  }
+}
+
+/* ---- App header responsive ---- */
+@media (max-width: 760px) {
+  .app-themed .topbar.app-topbar {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .app-nav {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+    margin: 0;
+  }
+
+  .app-nav-link span {
+    display: none;
+  }
+
+  .app-nav-link {
+    flex: 1;
+    justify-content: center;
+    padding: 11px;
+  }
+
+  .app-exit span {
+    display: none;
+  }
+}

@@ -142,7 +142,7 @@ export function LockPanel({
         <p className={`sync-note ${syncStatus}`}>{syncMessage}</p>
         <button className="ghost-btn">
           <Pause size={17} />
-          Fullscreen + Wake Lock cuando el navegador lo permite
+          Pantalla completa activa
         </button>
       </div>
     );

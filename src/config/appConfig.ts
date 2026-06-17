@@ -1,5 +1,5 @@
 export const appConfig = {
-  name: "MnemoLock",
+  name: "MindLatch",
   baseRequiredCorrect: 2,
   defaultCooldownMinutes: 3,
   minPasswordLength: 6,

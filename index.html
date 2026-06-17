@@ -3,20 +3,95 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#dff5ff" />
+    <meta name="theme-color" content="#07122F" />
     <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/png" href="/mindlatch-icon.png" />
+    <link rel="apple-touch-icon" href="/mindlatch-icon.png" />
+    <link rel="canonical" href="https://mindlatch.app/" />
+
+    <title>MindLatch | Estudia sin distracciones y desbloquea con lo que aprendiste</title>
     <meta
       name="description"
-      content="MnemoLock bloquea distracciones durante tus sesiones de estudio y desbloquea el acceso con preguntas basadas en lo que aprendiste."
+      content="MindLatch bloquea tu navegador, computadora o celular hasta que respondas correctamente preguntas de lo que estudias. Enfoque por memoria activa, no por fuerza de voluntad. Prueba la demo sin registro."
     />
+    <meta name="keywords" content="app de estudio, bloquear distracciones, enfoque, active recall, memoria activa, productividad, concentracion, focus app" />
     <meta name="robots" content="index, follow" />
-    <meta property="og:title" content="MnemoLock | Estudia sin distracciones" />
+    <meta name="author" content="MindLatch" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mindlatch.app/" />
+    <meta property="og:title" content="MindLatch | Estudia sin distracciones" />
     <meta
       property="og:description"
-      content="Una app de enfoque para estudiantes: bloquea el impulso, estudia con intencion y desbloquea con memoria activa."
+      content="Bloquea el impulso, estudia con intencion y desbloquea solo cuando demuestras que aprendiste."
     />
-    <meta property="og:type" content="website" />
-    <title>MnemoLock | Bloquea distracciones y desbloquea con aprendizaje</title>
+    <meta property="og:image" content="https://mindlatch.app/mindlatch-icon.png" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="MindLatch" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MindLatch | Estudia sin distracciones" />
+    <meta
+      name="twitter:description"
+      content="La app de enfoque que solo te desbloquea cuando demuestras que aprendiste."
+    />
+    <meta name="twitter:image" content="https://mindlatch.app/mindlatch-icon.png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "MindLatch",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Web, iOS, Android",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "description": "App de enfoque que bloquea distracciones y desbloquea el acceso cuando el usuario demuestra aprendizaje con preguntas de memoria activa.",
+        "url": "https://mindlatch.app/"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Como desbloquea MindLatch una sesion de estudio?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "En lugar de un boton de salida, MindLatch te hace responder preguntas cortas sobre lo que acabas de estudiar. Sales cuando demuestras que aprendiste."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Necesito crear una cuenta para probarlo?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Puedes iniciar una demo de bloqueo en menos de 30 segundos sin registrarte."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "MindLatch puede bloquear otras apps del celular?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "La version web/PWA crea un bloqueo cognitivo durante la sesion. El bloqueo total del sistema operativo llegara con la app nativa."
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

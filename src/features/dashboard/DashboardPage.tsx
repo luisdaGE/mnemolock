@@ -161,11 +161,11 @@ export function DashboardPage() {
         <section className="current-session-card">
           {session.sessionState === "setup" ? (
             <>
-              <p className="eyebrow">Sesion actual</p>
+              <p className="eyebrow">Sesión actual</p>
               <h2>{session.selectedSet.title}</h2>
               <p>
-                {session.unlockTarget} aciertos para desbloquear. Penalizacion: {session.cooldownMinutes} min. La PWA
-                usa fullscreen, Wake Lock cuando existe y un contrato claro de demo web.
+                {session.unlockTarget} aciertos para salir · Penalización {session.cooldownMinutes} min · Pantalla
+                completa.
               </p>
               <div className="session-actions">
                 <button className="primary-btn" onClick={session.startSession}>
